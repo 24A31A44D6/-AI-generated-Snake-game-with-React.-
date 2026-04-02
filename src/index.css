@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-cyan: #00ffff;
+  --color-magenta: #ff00ff;
+  --color-dark-bg: #050505;
+  
+  --font-pixel: "Press Start 2P", cursive;
+  --font-terminal: "VT323", monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-dark-bg text-cyan antialiased overflow-hidden font-terminal;
+    background-image: 
+      linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+      linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+  }
+}
+
+/* Screen Tearing Effect */
+@keyframes tear {
+  0% { clip-path: inset(10% 0 30% 0); transform: translateX(-5px); }
+  5% { clip-path: inset(40% 0 10% 0); transform: translateX(5px); }
+  10% { clip-path: inset(70% 0 5% 0); transform: translateX(-2px); }
+  15% { clip-path: inset(0% 0 0% 0); transform: translateX(0); }
+  100% { clip-path: inset(0% 0 0% 0); transform: translateX(0); }
+}
+
+.screen-tear {
+  animation: tear 4s infinite step-end;
+}
+
+/* Static Noise Overlay */
+.static-noise::before {
+  content: "";
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: url('https://grainy-gradients.vercel.app/noise.svg');
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 9999;
+  animation: noise-move 0.2s infinite;
+}
+
+@keyframes noise-move {
+  0% { transform: translate(0,0); }
+  10% { transform: translate(-5%,-5%); }
+  20% { transform: translate(-10%,5%); }
+  30% { transform: translate(5%,-10%); }
+  40% { transform: translate(-5%,15%); }
+  50% { transform: translate(-10%,5%); }
+  60% { transform: translate(15%,0); }
+  70% { transform: translate(0,10%); }
+  80% { transform: translate(-15%,0); }
+  90% { transform: translate(10%,5%); }
+  100% { transform: translate(5%,0); }
+}
+
+/* Glitch Text */
+.glitch-magenta {
+  text-shadow: 2px 0 var(--color-magenta);
+}
+
+.glitch-cyan {
+  text-shadow: -2px 0 var(--color-cyan);
+}
+
+@keyframes glitch-anim {
+  0% { clip-path: inset(40% 0 61% 0); }
+  20% { clip-path: inset(92% 0 1% 0); }
+  40% { clip-path: inset(43% 0 1% 0); }
+  60% { clip-path: inset(25% 0 58% 0); }
+  80% { clip-path: inset(54% 0 7% 0); }
+  100% { clip-path: inset(58% 0 43% 0); }
+}
+
+.glitch-box {
+  position: relative;
+}
+
+.glitch-box::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 2px;
+  text-shadow: -2px 0 var(--color-magenta);
+  background: var(--color-dark-bg);
+  overflow: hidden;
+  clip-path: inset(0 0 0 0);
+  animation: glitch-anim 2s infinite linear alternate-reverse;
+}
+
+.neon-border-cyan {
+  border: 2px solid var(--color-cyan);
+  box-shadow: 0 0 10px var(--color-cyan), inset 0 0 5px var(--color-cyan);
+}
+
+.neon-border-magenta {
+  border: 2px solid var(--color-magenta);
+  box-shadow: 0 0 10px var(--color-magenta), inset 0 0 5px var(--color-magenta);
+}
